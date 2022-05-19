@@ -35,3 +35,5 @@ filelist = os.listdir("pdffiles")
 filelist = [f for f in filelist if ".pdf" in f]
 for filename in filelist:
     convert_pdf2txt(filename)
+
+s
