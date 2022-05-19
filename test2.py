@@ -5,4 +5,33 @@ from pdfminer.pdfpage import PDFPage
 from pdfminer.layout import LAParams
 import os
 
-rmgr = PDFResourceManager
+
+def convert_pdf2txt(filename):
+    pdf_file = os.path.join("pdffiles", filename)
+    fp = open(pdf_file, "rb")
+
+    text_filename = filename.replace(".pdf", ".txt")
+    text_file = os.path.join("txtfiles", text_filename)
+    outfp = open(text_file, "w", encoding="utf-8")
+
+    rmgr = PDFResourceManager()
+    lprms = LAParams()
+    device = TextConverter(rmgr, outfp, laparams=lprms)
+
+    iprtr = PDFPageInterpreter(rmgr, device)
+
+    for page in PDFPage.get_pages(fp):
+        lprtr.process_page(page)
+
+    outfp.close()
+    device.close()
+    fp.close()
+
+
+if not os.path.exists("pdffiles"):
+    os.mkdir("txtfiles")
+
+filelist = os.listdir("pdffiles")
+filelist = [f for f in filelist if ".pdf" in f]
+for filename in filelist:
+    convert_pdf2txt(filename)
